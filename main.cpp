@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 // Austin Roach
 // CS 151
@@ -13,6 +14,20 @@ int cells = rows * columns;
 int maxIndex = cells - 1;
 int maxRow = rows - 1;
 int maxColumn = columns - 1;
+
+// Gem Globals
+
+int bronzeNum = 11;
+int silverNum = 12;
+int goldNum = 13;
+int rubiesNum = 14;
+int vibraniumNum = 15;
+
+int bronzeLength = 5;
+int silverLength = 4;
+int goldLength = 3;
+int rubiesLength = 2;
+int vibraniumLength = 1;
 
 // Helper accepts 2D row, column parameters, returns corresponding 1D array
 // index
@@ -142,138 +157,6 @@ void digAll(int *arr) {
     }
   }
 }
-/*
-// int setByOffset(int *array, int row, int column, int length, int init, bool
-horizontal, bool forward) {
-
-
-
-//   int coord = flatten(row, column);
-//   int max = (rows * columns) - 1;
-//   int counter = 0;
-
-//   while (length > 0) {
-//     if (!forward && coord == 0) {
-//       coord = max;
-//     }
-//     if (coord > max) {
-//       if (horizontal) {
-
-//       } else {
-
-//       }
-//       coord = 0;
-//       row = 0;
-//       column = 0;
-//     }
-//     if (array[coord] != init) {
-//       array[coord] = init;
-//       counter++;
-//     }
-//     if (horizontal) {
-//       if (forward) {
-//         coord++;
-//       } else {
-//         coord--;
-//       }
-
-//       } else {
-//       if (forward) {
-//         if (row < rows) {
-//           row++;
-//         } else {
-//           row = 0;
-//           if (column < columns) {
-//             column++;
-//           } else {
-//             column = 0;
-//           }
-
-//         }
-//       } else { //if backward
-
-//       }
-//     }
-
-//     // else {
-//     //   if (row < rows) {
-//     //     row++;
-//     //   } else {
-//     //     row = 0;
-//     //     if (column < columns) {
-//     //       column++;
-//     //     } else {
-//     //       column = 0;
-//     //     }
-//     //     coord = flatten(row, column);
-//     //   }
-
-//    // }
-//     length--;
-//   }
-//   return counter;
-// }
-
-// int wrapAround(int coord, int step, int max, bool horizontal) {
-//   if (coord > max) {
-//     coord = (coord + step) - max;
-//   }
-//   if (coord < 0) {
-//     coord = max + step;
-//   }
-//   return coord;
-// }
-
-// int wrapAround(int coord, int step, int max) {
-//   if (coord )
-// }
-
-//  int setByOffset(int *array, int row, int column, int length, int init, bool
-horizontal, bool forward) {
-
-//   int counter = 0;
-//   int coord = flatten(row, column);
-//   int step = -1;
-//   if (forward) {
-//     step = 1;
-//   }
-
-//   while (length > 0) {
-//     coord = wrapAround(coord, step, maxIndex, horizontal);
-//     if (array[coord] != init) {
-//         array[coord] = init;
-//         counter++;
-//       }
-//     if (horizontal) {
-//       if (column < columns) {
-//         column+=step;
-//       } else {
-//         column = 0;
-//         if (row < rows) {
-//           row+=step;
-//         } else {
-//           row = 0;
-//         }
-//       }
-//     } else {
-//       if (row < rows) {
-//           row+=step;
-//         } else {
-//         row = 0;
-//         if (column < columns) {
-//         column+=step;
-//           } else {
-//         column = 0;
-//           }
-//         }
-//     }
-//     coord = flatten(row, column);
-//     length--;
-//   }
-
-//   return counter;
-// }
-*/
 
 // Checks cell to ensure it is not occupied by any other treasure chests.
 // Returns false if treasure is found. True if unoccupied.
@@ -385,7 +268,7 @@ void placeChestTest(int *array, int row, int column, int repeats, int init,
 }
 
 void placeChestTestSuite(int *arr) {
-    // placeChest testing variables for valid, vertical test
+  // placeChest testing variables for valid, vertical test
   int chestRow = 6;
   int chestColumn = 0;
   int chestValue = 11;
@@ -475,11 +358,92 @@ void placeChestTestSuite(int *arr) {
 
   printf("End of placeChest tests.\n");
 }
+
+// Deletes array from heap memory, assigns pointer to NULL
 void cleanup(int *arr) {
   delete[] arr;
   arr = NULL;
 }
 
+int placeBronze(int *array, int row, int column, bool horizontal) {
+  return placeChest(array, row, column, bronzeLength, bronzeNum, horizontal);
+}
+
+void consoleBronze(int *array) {
+  int row = 0;
+  int column = 0;
+  bool horizontal = true;
+  char alignment;
+  char *name = "Bronze";
+  int chestNum;
+  int chestLength;
+  printf("Placing %d cell long %s Chest\n...\nEnter 'h' to place the chest "
+         "horizontally, or 'v' to place the chest vertically:",
+         bronzeLength, name);
+  scanf("%c", &alignment);
+  while (alignment != 'h' && alignment != 'v') {
+    printf("Horizontal or vertical? (h/v)\n");
+    scanf("%c", &alignment);
+    if (alignment == 'h') {
+      horizontal = true;
+    } else if (alignment == 'v') {
+      horizontal = false;
+    } else {
+      printf("Error: invalid character\n");
+    }
+  }
+  printf("Please enter a Row: ");
+  scanf("%d", &row);
+  while (row > maxRow || row < 0) {
+    printf(
+        "Error: index out or range. Please enter a number between 0 and %d\n",
+        maxRow);
+    scanf("%d", &row);
+  }
+  printf("Please enter a Column: ");
+  scanf("%d", &column);
+  while (column > maxColumn || column < 0) {
+    printf(
+        "Error: index out or range. Please enter a number between 0 and %d\n",
+        maxColumn);
+    printf("Please enter a Column: ");
+    scanf("%d", &column);
+  }
+  if (placeChest(array, row, column, bronzeLength, bronzeNum, horizontal) ==
+      -1) {
+    printf("Something went wrong! Trying again\n...\n...\n...\n");
+    consoleBronze(array);
+  } else {
+    printf("%s chest placed successfully!\n\n", name);
+    printGrid(array);
+  }
+}
+
+bool checkRange(int num, int max) {
+  return num <= max && 0 <= num;
+}
+
+bool checkRow(int row, int rows) {
+  if (checkRange(row, rows)) {
+    return true;
+  } else {
+    printf("");
+    return false;
+  }
+}
+
+
+
+void consoleDig(int *array) {
+  int row;
+  int column;
+  printf("Enter a coordinate to excavate\nRow: ");
+  scanf("%d", &row);
+  printf("Column: ");
+  scanf("%d", &column);
+
+  dig(array, row, column);
+}
 int main(int argc, char **argv) {
   // Hardcoded array
 
@@ -490,19 +454,20 @@ int main(int argc, char **argv) {
                             0,  0,  -1,  0, 0, 0, 15,  15,  0,  0,  0,   0};
 
   printGrid(arr);
-  placeChestTestSuite(arr);
+  //  placeChestTestSuite(arr);
+  //consoleBronze(arr);
+  consoleDig(arr);
 
+  // printGrid(arr);
+  // show(arr);
+  // reveal(arr);
 
-  printGrid(arr);
-  show(arr);
-  reveal(arr);
+  // // dig testing variables
+  // int digRow = rows / 2;
+  // int digColumn = columns / 3;
+  // dig(arr, digRow, digColumn);
 
-  // dig testing variables
-  int digRow = rows / 2;
-  int digColumn = columns / 3;
-  dig(arr, digRow, digColumn);
-
-  // digAll(arr, rows, columns); //uncomment to test dig on all cells
+  // // digAll(arr, rows, columns); //uncomment to test dig on all cells
   cleanup(arr);
   return 0;
 }
