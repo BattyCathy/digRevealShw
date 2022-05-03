@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
+#include <iostream>
+using std::string;
 
 // Austin Roach
 // CS 151
@@ -31,6 +34,68 @@ int vibraniumLength = 1;
 
 // Helper accepts 2D row, column parameters, returns corresponding 1D array
 // index
+enum TreasureType {
+BRONZE, SILVER, GOLD, RUBIES, VIBRANIUM
+};
+class TreasureChest {
+public: 
+TreasureType type;
+int length;
+int cipher;
+string name;
+TreasureChest(TreasureType type) {
+  switch(type) {
+    case BRONZE:
+      length = bronzeLength;
+      cipher = bronzeNum;
+      name = "Bronze";
+    break;
+    case SILVER:
+      length = silverLength;
+      cipher = silverNum;
+      name = "Silver";
+    break;
+    case GOLD:
+      length = goldLength;
+        cipher = goldNum;
+      name = "Gold";
+    break;
+    case RUBIES:
+      length = rubiesLength;
+      cipher = rubiesNum;
+      name = "Rubies";
+    break;
+    case VIBRANIUM:
+      length = vibraniumLength;
+      cipher = vibraniumNum;
+    break;
+    
+  }
+}
+};
+
+TreasureType typeChar(char c) {
+  TreasureType type;
+  switch(c) {
+    case 'b':
+    type = BRONZE;
+    break;
+    case 's':
+    type = SILVER;
+    break;
+    case 'g':
+    type = GOLD;
+    break;
+    case 'r':
+    type = RUBIES;
+    break;
+    case 'v':
+    type = VIBRANIUM;
+  }
+}
+
+Treas
+
 int flatten(int row, int column) { return (row * columns) + column; }
 
 void unflattenPrint(int coord) {
@@ -217,8 +282,7 @@ bool checkPlacement(int *array, int row, int column, int repeats, int value,
   return true;
 }
 
-int placeChest(int *array, int row, int column, int repeats, int value,
-               bool horizontal) {
+int placeChest(int *array, int row, int column, int repeats, int value, bool horizontal) {
   int counter = 0;
   int coord = flatten(row, column);
 
@@ -369,6 +433,11 @@ int placeBronze(int *array, int row, int column, bool horizontal) {
   return placeChest(array, row, column, bronzeLength, bronzeNum, horizontal);
 }
 
+void hideTreasure(int *array, int row, int column, bool horizontal, TreasureType treasure) {
+  TreasureChest *chest = new TreasureChest(treasure);
+  placeChest(array, row, column, chest->length, chest->cipher, horizontal);
+}
+
 void consoleBronze(int *array) {
   int row = 0;
   int column = 0;
@@ -418,7 +487,6 @@ void consoleBronze(int *array) {
     printGrid(array);
   }
 }
-
 bool checkRange(int num, int max) {
   return num <= max && 0 <= num;
 }
