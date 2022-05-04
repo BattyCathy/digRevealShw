@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string>
 #include <iostream>
+#include "board.cpp"
+
 using std::string;
 
 // Austin Roach
@@ -92,9 +94,9 @@ TreasureType typeChar(char c) {
     case 'v':
     type = VIBRANIUM;
   }
+  return type;
 }
 
-Treas
 
 int flatten(int row, int column) { return (row * columns) + column; }
 
@@ -211,16 +213,6 @@ void dig(int *arr, int row, int column) {
     arr[coord] *= -1;
   }
   printGrid(arr);
-}
-// Tests dig method by iteratively 'digging' all cells.
-// CAUTION: Produces a lot of console output - one grid is printed per
-// modification
-void digAll(int *arr) {
-  for (int row = 0; row < rows; row++) {
-    for (int column = 0; column < columns; column++) {
-      dig(arr, row, column);
-    }
-  }
 }
 
 // Checks cell to ensure it is not occupied by any other treasure chests.
@@ -438,55 +430,7 @@ void hideTreasure(int *array, int row, int column, bool horizontal, TreasureType
   placeChest(array, row, column, chest->length, chest->cipher, horizontal);
 }
 
-void consoleBronze(int *array) {
-  int row = 0;
-  int column = 0;
-  bool horizontal = true;
-  char alignment;
-  char *name = "Bronze";
-  int chestNum;
-  int chestLength;
-  printf("Placing %d cell long %s Chest\n...\nEnter 'h' to place the chest "
-         "horizontally, or 'v' to place the chest vertically:",
-         bronzeLength, name);
-  scanf("%c", &alignment);
-  while (alignment != 'h' && alignment != 'v') {
-    printf("Horizontal or vertical? (h/v)\n");
-    scanf("%c", &alignment);
-    if (alignment == 'h') {
-      horizontal = true;
-    } else if (alignment == 'v') {
-      horizontal = false;
-    } else {
-      printf("Error: invalid character\n");
-    }
-  }
-  printf("Please enter a Row: ");
-  scanf("%d", &row);
-  while (row > maxRow || row < 0) {
-    printf(
-        "Error: index out or range. Please enter a number between 0 and %d\n",
-        maxRow);
-    scanf("%d", &row);
-  }
-  printf("Please enter a Column: ");
-  scanf("%d", &column);
-  while (column > maxColumn || column < 0) {
-    printf(
-        "Error: index out or range. Please enter a number between 0 and %d\n",
-        maxColumn);
-    printf("Please enter a Column: ");
-    scanf("%d", &column);
-  }
-  if (placeChest(array, row, column, bronzeLength, bronzeNum, horizontal) ==
-      -1) {
-    printf("Something went wrong! Trying again\n...\n...\n...\n");
-    consoleBronze(array);
-  } else {
-    printf("%s chest placed successfully!\n\n", name);
-    printGrid(array);
-  }
-}
+
 bool checkRange(int num, int max) {
   return num <= max && 0 <= num;
 }
@@ -521,10 +465,22 @@ int main(int argc, char **argv) {
                             12, 13, 0,   0, 0, 0, 0,   0,   0,  0,  -1,  0,  0,
                             0,  0,  -1,  0, 0, 0, 15,  15,  0,  0,  0,   0};
 
-  printGrid(arr);
+//  printGrid(arr);
   //  placeChestTestSuite(arr);
   //consoleBronze(arr);
-  consoleDig(arr);
+  //consoleDig(arr);
+//  hideTreasure(arr, 0, 0, true, BRONZE);
+//  printGrid(arr);
+  Board *objectBoard = new Board(rows, columns);
+  objectBoard->printBoard();
+  objectBoard->simpleModify(0, 0, 9);
+  objectBoard->modifyRange(1, 0, 7, true, -13);
+    objectBoard->modifyRange(1, 0, 5, true, -1);
+    objectBoard->modifyRange(2, 2, 3, false, 15);
+  objectBoard->printBoard();
+  objectBoard->printCipher(SHOW);
+  objectBoard->printCipher(REVEAL);
+
 
   // printGrid(arr);
   // show(arr);
