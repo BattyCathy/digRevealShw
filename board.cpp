@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+
+
 enum Cipher {
 SHOW, REVEAL, NONE
 };
@@ -34,19 +36,18 @@ bool modifyCell(int row, int column, int value) {
   }
   return false;
 }
-void simpleModify(int row, int column, int value) {
-  if (validateCell(row, column)){
-    data[row * columns + column] = value;
-    printBoard(); 
-  }
-  
-}
 
-void gridMover(int *row, int *column, bool horizontal) {
-  if (horizontal) {
-    column++;
+
+bool digCell(int row, int column) {
+  int *cell = &data[row * columns, column];
+  if (*cell > 0) {
+    *cell *= -1;
+    return true;
+  } else if (*cell == 0) {
+    *cell = -1;
+    return true;
   } else {
-    row++;
+    return false;
   }
 }
 
@@ -70,8 +71,9 @@ bool modifyRange(int row, int column, int length, bool horizontal, int value) {
         row++;
       }
     }
+    return true;
   }
-  return true;
+  return false;
 }
 
 
@@ -139,7 +141,7 @@ char revealCipher(int cell) {
   }
   return c;
 }
-void printCipher(Cipher cipher) {
+void cipherPrint(Cipher cipher) {
     for (int row = 0; row < rows; row++) {
     for (int column = 0; column < columns; column++) {
       char c;
@@ -161,4 +163,6 @@ void printCipher(Cipher cipher) {
   printf("\n");
 }
 };
+
+
 
